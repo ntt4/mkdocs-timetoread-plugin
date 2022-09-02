@@ -1,10 +1,14 @@
 from setuptools import setup, find_packages
 
+with open('README.md') as f:
+    long_description = f.read()
+
 setup(
     name='mkdocs-timetoread-plugin',
-    version='0.0.1',
+    version='0.0.4',
     description='"Estimated Time To Read" generator for MkDocs',
-    long_description="mkdocs-timetoread-plugin is a lightweight 'estimated time to read' generator for MkDocs inspired by @alanhamlett's 'readtime' and Medium's read time formula.",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     keywords='mkdocs',
     url='https://github.com/ntt4/mkdocs-timetoread-plugin',
     author='Tavis Booth',

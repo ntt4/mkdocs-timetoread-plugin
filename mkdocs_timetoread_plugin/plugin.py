@@ -13,7 +13,9 @@ class TimeToRead(BasePlugin):
     config_scheme = (
         ('wpm', config_options.Type(int, default=255)),
         ('allPages', config_options.Type(bool, default=True)),
-        ('textColor', config_options.Type(str, default="#bdbdbd"))
+        ('textColor', config_options.Type(str, default="bdbdbd")),
+        ('substitute', config_options.Type(str, default="</h1>")),
+
     )
 
 
@@ -42,24 +44,25 @@ class TimeToRead(BasePlugin):
 
 
     def on_post_page(self, output: str, page, config: Config):
-        text_color = self.config['textColor']            
+        text_color = self.config['textColor']
+        sub = self.config['substitute']
 
         for key, value in self.page_time_dict.items():
             if key == page.url:
                 if value > 1:
-                    wanted = f'</h1><p style="color:{text_color}"><i>Estimated time to read: {value} minutes</i></p>\n'
+                    wanted = f'</h1><p style="color:#{text_color}"><i>Estimated time to read: {value} minutes</i></p>\n'
                 elif value == 1:
-                    wanted = f'</h1><p style="color:{text_color}"><i>Estimated time to read: {value} minute</i></p>\n'
+                    wanted = f'</h1><p style="color:#{text_color}"><i>Estimated time to read: {value} minute</i></p>\n'
                 elif value == False:
                     return output
                 else: 
                     return output
 
-                sub = '</h1>'
-                where = [m.start() for m in re.finditer(sub, output)][0]
-                before = output[:where]
-                after = output[where:]
-                after = after.replace(sub, wanted, 1)
-                output = before + after
+                if sub in output:
+                    where = [m.start() for m in re.finditer(sub, output)][0]
+                    before = output[:where]
+                    after = output[where:]
+                    after = after.replace(sub, wanted, 1)
+                    output = before + after
         
                 return output
