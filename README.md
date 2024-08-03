@@ -37,7 +37,7 @@ plugins:
   - timetoread:
       wpm: 190
       allPages: True
-      textColour: 000000
+      textColor: 000000
 ```
 
 ## Front Matter
